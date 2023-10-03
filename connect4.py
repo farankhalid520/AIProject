@@ -85,6 +85,7 @@ def random_vs_player(board, game_over, turn):
         else:
             turn += 1
 
+
 # We decided on using minmax
 def minimax(board, depth, maximizing_player):
     if depth == 0 or winner(board):
@@ -113,8 +114,72 @@ def minimax(board, depth, maximizing_player):
 
 
 def evaluate_board(board):
-    # Evaluating board state vs AI
-    pass
+    score = 0
+
+    # Check for a win for either player
+    if winner(board):
+        score = 1000 if winning_player(board) == "o" else -1000
+        return score
+
+    # Check for 3 in a row for AI
+    for c in range(7 - 3):
+        for r in range(6):
+            if np.array_equal(board[r, c:c + 3], ["o", "o", "o"]):
+                score += 5
+
+    # Check for 3 in a row for opponent
+    for c in range(7 - 3):
+        for r in range(6):
+            if np.array_equal(board[r, c:c + 3], ["x", "x", "x"]):
+                score -= 5
+
+    # Check for 2 in a row for AI
+    for c in range(7 - 2):
+        for r in range(6):
+            if np.array_equal(board[r, c:c + 2], ["o", "o"]):
+                score += 2
+
+    # Check for 2 in a row for opponent
+    for c in range(7 - 2):
+        for r in range(6):
+            if np.array_equal(board[r, c:c + 2], ["x", "x"]):
+                score -= 2
+
+    # Center column control
+    center_array = [i for i in list(board[:, 3])]
+    center_count = center_array.count("o")
+    score += center_count * 3
+
+    return score
+
+
+def winning_player(board):
+    # Check horizontal locations for win
+    for c in range(7 - 3):
+        for r in range(6):
+            if board[r][c] == board[r][c + 1] == board[r][c + 2] == board[r][c + 3] != "-":
+                return board[r][c]
+
+    # Check vertical locations for win
+    for c in range(7):
+        for r in range(6 - 3):
+            if board[r][c] == board[r + 1][c] == board[r + 2][c] == board[r + 3][c] != "-":
+                return board[r][c]
+
+    # Check positively sloped diagonals
+    for c in range(7 - 3):
+        for r in range(3, 6):
+            if board[r][c] == board[r - 1][c + 1] == board[r - 2][c + 2] == board[r - 3][c + 3] != "-":
+                return board[r][c]
+
+    # Check negatively sloped diagonals
+    for c in range(7 - 3):
+        for r in range(6 - 3):
+            if board[r][c] == board[r + 1][c + 1] == board[r + 2][c + 2] == board[r + 3][c + 3] != "-":
+                return board[r][c]
+
+    # No winner
+    return None
 
 
 def is_valid_location(board, col):
@@ -175,8 +240,7 @@ def main():
         elif choice == "2":
             random_vs_player(board, game_over, turn)
         elif choice == "3":
-            # AI vs Player not implemented yet
-            pass
+            ai_vs_player(board, game_over, turn)
         elif choice == "4":
             print("Bye!")
             break
