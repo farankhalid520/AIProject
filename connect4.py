@@ -85,6 +85,74 @@ def random_vs_player(board, game_over, turn):
         else:
             turn += 1
 
+# We decided on using minmax
+def minimax(board, depth, maximizing_player):
+    if depth == 0 or winner(board):
+        return evaluate_board(board)
+
+    if maximizing_player:
+        max_eval = float('-inf')
+        for col in range(7):
+            new_board = board.copy()
+            # Check if move is valid and make the move
+            if is_valid_location(new_board, col):
+                make_move(new_board, col, "o")
+                eval = minimax(new_board, depth - 1, False)
+                max_eval = max(max_eval, eval)
+        return max_eval
+    else:
+        min_eval = float('inf')
+        for col in range(7):
+            new_board = board.copy()
+            # Check if move is valid and make the move
+            if is_valid_location(new_board, col):
+                make_move(new_board, col, "x")
+                eval = minimax(new_board, depth - 1, True)
+                min_eval = min(min_eval, eval)
+        return min_eval
+
+
+def evaluate_board(board):
+    # Evaluating board state vs AI
+    pass
+
+
+def is_valid_location(board, col):
+    return board[0][col] == "-"
+
+
+def make_move(board, col, player_symbol):
+    for r in range(5, -1, -1):
+        if board[r][col] == "-":
+            board[r][col] = player_symbol
+            break
+
+
+def ai_vs_player(board, game_over, turn):
+    while not game_over:
+        if turn % 2 == 0:
+            take_turn(board, "x")
+        else:
+            best_score = float('-inf')
+            best_col = None
+            for col in range(7):
+                new_board = board.copy()
+                if is_valid_location(new_board, col):
+                    make_move(new_board, col, "o")
+                    score = minimax(new_board, 3, False)  # Depth 3
+                    if score > best_score:
+                        best_score = score
+                        best_col = col
+            make_move(board, best_col, "o")
+            print(board)
+
+        player_symbol = "x" if turn % 2 == 0 else "o"
+        if winner(board):
+            print(f"Player {player_symbol} is the winner!")
+            game_over = True
+        else:
+            turn += 1
+
 
 # Main function to run the game
 def main():
