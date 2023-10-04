@@ -85,31 +85,36 @@ def random_vs_player(board, game_over, turn):
         else:
             turn += 1
 
-# We decided on using minmax
-def minimax(board, depth, maximizing_player):
+# We decided on using minmax with alpha beta pruning (followed wiki pseudo code)
+def minimax(board, depth, maximizing_player)
+def minimax(board, depth, alpha, beta, maximizing_player):
     if depth == 0 or winner(board):
         return evaluate_board(board)
 
     if maximizing_player:
-        max_eval = float('-inf')
+        value = float('-inf')
         for col in range(7):
             new_board = board.copy()
             # Check if move is valid and make the move
             if is_valid_location(new_board, col):
                 make_move(new_board, col, "o")
-                eval = minimax(new_board, depth - 1, False)
-                max_eval = max(max_eval, eval)
-        return max_eval
+                value = max(value, minimax(new_board, depth - 1, alpha, beta, False))
+		if value > beta:
+		    break
+		alpha = max(alpha, value)
+        return value
     else:
-        min_eval = float('inf')
+        value = float('inf')
         for col in range(7):
             new_board = board.copy()
             # Check if move is valid and make the move
             if is_valid_location(new_board, col):
                 make_move(new_board, col, "x")
-                eval = minimax(new_board, depth - 1, True)
-                min_eval = min(min_eval, eval)
-        return min_eval
+                value = min(value, minimax(new_board, depth - 1, alpha, beta, False))
+                if value < alpha:
+		    break
+		beta = min(beta, value)
+        return value
 
 
 def evaluate_board(board):
