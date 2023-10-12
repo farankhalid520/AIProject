@@ -1,5 +1,6 @@
 import numpy as np
 import random
+import time
 
 
 # Check for a winner
@@ -202,18 +203,24 @@ def ai_vs_player(board, game_over, turn):
         if turn % 2 == 0:
             take_turn(board, "x")
         else:
+            start_time = time.time()
+
             best_score = float('-inf')
             best_col = None
             for col in range(7):
                 new_board = board.copy()
                 if is_valid_location(new_board, col):
                     make_move(new_board, col, "o")
-                    score = minimax(new_board, 5, False, float('-inf'), float('inf'))  # Depth 5
+                    score = minimax(new_board, 3, False, float('-inf'), float('inf'))  # Depth 3
                     if score > best_score:
                         best_score = score
                         best_col = col
+
             make_move(board, best_col, "o")
             print(board)
+
+            end_time = time.time()
+            print(f"AI response time: {end_time - start_time:.2f} seconds")
 
         player_symbol = "x" if turn % 2 == 0 else "o"
         if winner(board):
