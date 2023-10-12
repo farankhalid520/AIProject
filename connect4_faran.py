@@ -230,6 +230,66 @@ def ai_vs_player(board, game_over, turn):
             turn += 1
 
 
+def run_tests():
+    print("\nRunning tests...\n")
+
+    test_cases = [
+        {
+            "board": np.array([
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["x", "x", "x", "-", "-", "-", "x"]
+            ]),
+            "expected_col": 3,
+            "description": "AI should block player from creating 4 in a row horizontally"
+        },
+        {
+            "board": np.array([
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["-", "-", "x", "x", "-", "-", "-"],
+                ["-", "x", "o", "o", "-", "-", "-"],
+                ["x", "o", "x", "o", "o", "-", "-"]
+            ]),
+            "expected_col": 3,
+            "description": "AI should block player from creating 4 in a row diagonally"
+        }
+    ]
+
+    for i, test_case in enumerate(test_cases):
+        board = test_case["board"].copy()
+        expected_col = test_case["expected_col"]
+
+        start_time = time.time()
+
+        best_score = float('-inf')
+        best_col = None
+        for col in range(7):
+            new_board = board.copy()
+            if is_valid_location(new_board, col):
+                make_move(new_board, col, "o")
+                score = minimax(new_board, 3, False, float('-inf'), float('inf'))
+                if score > best_score:
+                    best_score = score
+                    best_col = col
+
+        end_time = time.time()
+
+        if best_col != expected_col:
+            print(f"Test {i + 1} FAILED: {test_case['description']}")
+            print(f"Expected column: {expected_col}, AI chose: {best_col}")
+            print(board)
+            all_tests_pass = False
+        else:
+            print(f"Test {i + 1} passed")
+
+        print(f"AI response time for Test {i + 1}: {end_time - start_time:.2f} seconds")
+
+
 # Main function to run the game
 def main():
     while True:
@@ -242,9 +302,10 @@ def main():
         print("1. Player vs. Player")
         print("2. Random Player vs. Player")
         print("3. AI vs. Player")
-        print("4. Quit\n")
+        print("4. Run AI tests")
+        print("5. Quit\n")
 
-        choice = input("Enter your choice (1/2/3/4): ")
+        choice = input("Enter your choice (1/2/3/4/5): ")
 
         if choice == "1":
             player_vs_player(board, game_over, turn)
@@ -253,10 +314,12 @@ def main():
         elif choice == "3":
             ai_vs_player(board, game_over, turn)
         elif choice == "4":
+            run_tests()
+        elif choice == "5":
             print("Bye!")
             break
         else:
-            print("Invalid choice. Please select 1, 2, 3, or 4.")
+            print("Invalid choice. Please select 1, 2, 3, 4, or 5.")
 
 
 if __name__ == "__main__":
