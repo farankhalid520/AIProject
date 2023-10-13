@@ -3,7 +3,7 @@ import random
 import time
 
 
-# Check for a winner
+# Winner 
 def winner(board):
     # Check horizontal locations for win
     for c in range(7 - 3):
