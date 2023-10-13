@@ -240,7 +240,7 @@ def run_tests():
                 ["-", "-", "-", "-", "-", "-", "-"],
                 ["-", "-", "-", "-", "-", "-", "-"],
                 ["-", "-", "-", "-", "-", "-", "-"],
-                ["-", "-", "-", "-", "-", "-", "-"],
+                ["o", "o", "o", "-", "-", "-", "-"],
                 ["x", "x", "x", "-", "-", "-", "x"]
             ]),
             "expected_col": 3,
@@ -257,6 +257,54 @@ def run_tests():
             ]),
             "expected_col": 3,
             "description": "AI should block player from creating 4 in a row diagonally"
+        },
+        {
+            "board": np.array([
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["x", "o", "x", "x", "-", "-", "-"],
+                ["x", "o", "o", "o", "-", "-", "-"],
+                ["x", "o", "x", "o", "o", "-", "-"]
+            ]),
+            "expected_col": 0,
+            "description": "AI should block player from creating 4 in a row vertically"
+        },
+        {
+            "board": np.array([
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["x", "x", "x", "-", "-", "-", "-"],
+                ["o", "o", "o", "-", "-", "-", "-"]
+            ]),
+            "expected_col": 3,
+            "description": "AI should win the game horizontally"
+        },
+        {
+            "board": np.array([
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["o", "x", "-", "-", "-", "-", "-"],
+                ["o", "x", "x", "-", "-", "-", "-"],
+                ["o", "x", "o", "-", "-", "-", "-"]
+            ]),
+            "expected_col": 0,
+            "description": "AI should win the game vertically"
+        },
+        {
+            "board": np.array([
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["-", "-", "o", "o", "-", "-", "-"],
+                ["-", "o", "x", "x", "-", "-", "-"],
+                ["o", "x", "o", "x", "x", "-", "-"]
+            ]),
+            "expected_col": 3,
+            "description": "AI should win the game diagonally"
         }
     ]
 
@@ -285,6 +333,8 @@ def run_tests():
             print(board)
             all_tests_pass = False
         else:
+            make_move(board, best_col, "o")
+            print(board)
             print(f"Test {i + 1} passed")
 
         print(f"AI response time for Test {i + 1}: {end_time - start_time:.2f} seconds")
