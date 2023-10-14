@@ -352,10 +352,9 @@ def main():
         print("1. Player vs. Player")
         print("2. Random Player vs. Player")
         print("3. AI vs. Player")
-        print("4. Run AI tests")
-        print("5. Quit\n")
+        print("4. Quit\n")
 
-        choice = input("Enter your choice (1/2/3/4/5): ")
+        choice = input("Enter your choice (1/2/3/4): ")
 
         if choice == "1":
             player_vs_player(board, game_over, turn)
@@ -364,12 +363,10 @@ def main():
         elif choice == "3":
             ai_vs_player(board, game_over, turn)
         elif choice == "4":
-            run_tests()
-        elif choice == "5":
             print("Bye!")
             break
         else:
-            print("Invalid choice. Please select 1, 2, 3, 4, or 5.")
+            print("Invalid choice. Please select 1, 2, 3, or 4.")
 
 
 if __name__ == "__main__":
