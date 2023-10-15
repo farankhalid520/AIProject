@@ -3,27 +3,27 @@ import random
 import time
 
 
-# Winner 
+# Function to determine Winner
 def winner(board):
-    # Check horizontal locations for win
+    # Checks horizontally for win
     for c in range(7 - 3):
         for r in range(6):
             if board[r][c] == board[r][c + 1] == board[r][c + 2] == board[r][c + 3] != "-":
                 return True
 
-    # Check vertical locations for win
+    # Checks vertically for win
     for c in range(7):
         for r in range(6 - 3):
             if board[r][c] == board[r + 1][c] == board[r + 2][c] == board[r + 3][c] != "-":
                 return True
 
-    # Check positively sloped diagonals
+    # Checks positively sloped diagonals
     for c in range(7 - 3):
         for r in range(3, 6):
             if board[r][c] == board[r - 1][c + 1] == board[r - 2][c + 2] == board[r - 3][c + 3] != "-":
                 return True
 
-    # Check negatively sloped diagonals
+    # Checks negatively sloped diagonals
     for c in range(7 - 3):
         for r in range(6 - 3):
             if board[r][c] == board[r + 1][c + 1] == board[r + 2][c + 2] == board[r + 3][c + 3] != "-":
@@ -118,6 +118,7 @@ def minimax(board, depth, maximizing_player, alpha, beta):
         return min_eval
 
 
+# Evaluation function
 def evaluate_board(board):
     score = 0
 

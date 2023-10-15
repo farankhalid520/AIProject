@@ -1,4 +1,5 @@
-from connect4 import *
+from connect4_final import *
+
 
 def run_tests():
     print("\nRunning tests...\n")
@@ -114,25 +115,22 @@ def run_tests():
             print(f"Test {i + 1} FAILED: {test_case['description']}")
             print(f"Expected column: {expected_col}, AI chose: {best_col}")
             print(board)
-            all_tests_pass = False
+
         else:
             make_move(board, best_col, "o")
             print(board)
             print(f"Test {i + 1} passed")
-            
-        
+
         print(f"AI response time for Test {i + 1}: {end_time - start_time:.2f} seconds")
     return times
 
+
 def main():
 
-        board = np.full((6, 7), "-", dtype=str)
-        game_over = False
-        turn = random.randint(0, 1)
-        print("\n\nCONNECT 4 TESTS\n")
+    print("\n\nCONNECT 4 TESTS\n")
 
-        times = run_tests()
-        print(f"Average AI response time is: {sum(times)/len(times):.2f} seconds")
+    times = run_tests()
+    print(f"Average AI response time is: {sum(times)/len(times):.2f} seconds")
 
 
 if __name__ == "__main__":
